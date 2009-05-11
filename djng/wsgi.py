@@ -58,6 +58,7 @@ from django.core.servers.basehttp import \
     BaseHTTPRequestHandler, WSGIServer
 
 class WSGIRequestHandler(WSGIRequestHandlerOld):
+    # Just enough to get rid of settings.py dependencies
     def __init__(self, *args, **kwargs):
         self.path = ''
         BaseHTTPRequestHandler.__init__(self, *args, **kwargs)
