@@ -1,7 +1,7 @@
 from django.http import HttpResponse as HttpResponseOld
 from Cookie import SimpleCookie
 
-class HttpResponse(HttpResponseOld):
+class Response(HttpResponseOld):
     default_charset = 'utf8'
     def __init__(self, content='', status=None, content_type=None):
         if not content_type:
