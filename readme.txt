@@ -17,7 +17,7 @@ Python web application in a single module:
 
 Or if you want hello and goodbye URLs, and a custom 404 page:
 
-import djng
+    import djng
 
     app = djng.ErrorWrapper(
         djng.Router(
