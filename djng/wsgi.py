@@ -14,8 +14,15 @@ base.get_script_name = get_script_name
 
 # Now on with the real code...
 from django import http
-from django.core.handlers.wsgi import STATUS_CODE_TEXT, WSGIRequest
+from django.core.handlers.wsgi import STATUS_CODE_TEXT
+from django.core.handlers.wsgi import WSGIRequest as WSGIRequestOld
 import sys
+
+class WSGIRequest(WSGIRequestOld):
+    def __init__(self, environ):
+        super(WSGIRequest, self).__init__(environ)
+        # Setting self._encoding prevents fallback to django.conf.settings
+        self._encoding = 'utf8'
 
 class WSGIWrapper(object):
     # Changes that are always applied to a response (in this order).

@@ -2,10 +2,10 @@ from django.http import HttpResponse as HttpResponseOld
 from Cookie import SimpleCookie
 
 class Response(HttpResponseOld):
-    default_charset = 'utf8'
+    _charset = 'utf8'
     def __init__(self, content='', status=None, content_type=None):
         if not content_type:
-            content_type = 'text/html; charset=%s' % self.default_charset
+            content_type = 'text/html; charset=%s' % self._charset
         if not isinstance(content, basestring) and\
                 hasattr(content, '__iter__'):
             self._container = content
