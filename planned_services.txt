@@ -1,0 +1,39 @@
+What should be a service?
+=========================
+
+As a general rule, services should be things that get configured in some way.
+Not everything in Django should be converted in to a service. If a component
+doesn't require any per-site configuration (e.g. forms, syndication feeds) it
+should probably be left as a regular library.
+
+Stuff in Django that should be a service
+----------------------------------------
+* Caching
+* Templating
+* Sending e-mail
+* "Current user" authentication
+* Sessions
+* Database connection - django.db.connection
+* Higher level ORM
+* File storage
+* Sites - or at least the concept of the "current site"
+
+Stuff that isn't yet in Django but should be a service
+------------------------------------------------------
+* HTTP client
+* Logging
+* Message queue
+* Cryptography (in particular signing things)
+
+Stuff that shouldn't be a service
+---------------------------------
+* The admin: it's just an application
+* Signals: they are part of core Django itself
+* Forms: they are a library, they don't need configuring at all
+* Testing: core Django, lives above services as has tools for mocking them
+* Sitemaps / syndication: again, these are libraries
+
+Stuff I'm not sure about
+------------------------
+* i18n / translation
+* Content Types / generic relations
