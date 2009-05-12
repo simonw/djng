@@ -1,3 +1,8 @@
+# Some settings are just too much work to monkey-patch around
+from django.conf import settings
+settings.configure(USE_18N = False)
+del settings
+
 from django.conf.urls.defaults import url
 from router import Router
 from errors import ErrorWrapper
