@@ -17,6 +17,7 @@ Stuff in Django that should be a service
 * Higher level ORM
 * File storage
 * Sites - or at least the concept of the "current site"
+* i18n / translation
 
 Stuff that isn't yet in Django but should be a service
 ------------------------------------------------------
@@ -35,5 +36,4 @@ Stuff that shouldn't be a service
 
 Stuff I'm not sure about
 ------------------------
-* i18n / translation
 * Content Types / generic relations
