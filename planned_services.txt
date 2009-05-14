@@ -18,6 +18,7 @@ Stuff in Django that should be a service
 * File storage
 * Sites - or at least the concept of the "current site"
 * i18n / translation
+* URL reversing
 
 Stuff that isn't yet in Django but should be a service
 ------------------------------------------------------
