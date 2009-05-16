@@ -17,7 +17,7 @@ class ErrorWrapper(object):
         return response
     
     def default_error_404(self, request):
-        return Response('A 404 error occurred')
+        return Response('A 404 error occurred', status=404)
     
     def default_error_500(self, request, e):
-        return Response('A 500 error occurred: %r' % e)
+        return Response('A 500 error occurred: %r' % e, status=505)
