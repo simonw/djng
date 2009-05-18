@@ -2,6 +2,9 @@ djng
 ====
 (pronounced "djing", with a mostly-silent "d")
 
+Blog entry: http://simonwillison.net/2009/May/19/djng/
+Mailing list: http://groups.google.com/group/djng
+
 djng is a micro-framework that depends on a macro-framework (Django).
 
 My definition of a micro-framework: something that lets you create an entire
