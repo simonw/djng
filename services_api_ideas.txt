@@ -1,0 +1,90 @@
+Services API
+============
+
+Requirements:
+
+- Maintain a stack of implementations for each service
+- Only one implementation of a service is "active" at a time
+- The default API for a service uses the current active implementation
+- Implementations can be used without participating in the stack at all
+- Middleware can temporarily push a new service on to the stack, for the 
+  duration of the current request
+- Services temporarily pushed on to the stack are reliably popped off again 
+  at the end of the current request, even if an exception is raised
+
+It would be nice if the solution meant that the current Django APIs for things
+like accessing the cache or loading a template could remain backwards
+compatible.
+
+Some ideas
+----------
+
+# Configure the default service (at the bottom of the stack)
+djng.template.configure(template_dirs = ('templates/default',))
+
+# Reconfigure for part of the URL space
+app = djng.Router(
+    (r'^foo', djng.reconfigure(
+        foo_view, djng.template,
+        template_dirs = ('templates/foo', 'templates/default')
+    )),
+    (r'^bar', bar_view),
+)
+
+djng.reconfigure is middleware which wrapes foo_view, then duplicates the
+current djng.template service and applies a new template_dirs property to it ,
+based on keyword argument.
+
+Or... use a decorator:
+
+app = djng.Router(
+    (r'^foo', djng.reconfigure(
+        djng.template, template_dirs = ('templates/foo', 'templates/default')
+    )(foo_view)),
+    (r'^bar', bar_view),
+)
+
+Which could also be written:
+
+@djng.reconfigure(
+    djng.template, template_dirs = ('templates/foo', 'templates/default')
+)
+def foo_view(request):
+    # ...
+
+Reconfigure is a bit strange though, because the majority of services will
+probably want a completely new implementation rather than a tweak to the
+existing one. Caching is a good example:
+
+# Set the default cache to be an InMemoryCache
+djng.cache.configure(djng.cache.InMemoryCache())
+
+# One URL path gets to use memcache instead
+app = djng.Router(
+    (r'^foo', djng.reconfigure(
+        foo_view, djng.cache, djng.cache.Memcache('127.0.0.1:11221')
+    )),
+    (r'^bar', bar_view),
+)
+
+Or as a decorator:
+
+app = djng.Router(
+    (r'^foo', djng.reconfigure(
+        djng.cache, djng.cache.Memcache('127.0.0.1:11221')
+    )(foo_view)),
+    (r'^bar', bar_view),
+)
+
+The signature of djng.reconfigure feels a bit strange though:
+
+def reconfigure(
+        service_to_reconfigure,
+        [optional new_service_instance],
+        **reconfigure_kwargs
+    ):
+    # ...
+
+Internally, reconfigure uses a try/finally block to ensure that the altered
+service implementation pushed on to the stack is popped off by the end of the
+request.
