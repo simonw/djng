@@ -3,6 +3,7 @@ from django.conf import settings
 settings.configure(USE_18N = False)
 del settings
 
+import middleware
 from django.conf.urls.defaults import url
 from router import Router
 from errors import ErrorWrapper
