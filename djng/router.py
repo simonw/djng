@@ -18,7 +18,10 @@ class Router(object):
     """
     def __init__(self, *urlpairs):
         self.urlpatterns = patterns('', *urlpairs)
-        self.resolver = urlresolvers.RegexURLResolver(r'^/', self)
+        # for 1.0 compatibility we pass in None for urlconf_name and then
+        # modify the _urlconf_module to make self hack as if its the module.
+        self.resolver = urlresolvers.RegexURLResolver(r'^/', None)
+        self.resolver._urlconf_module = self
     
     def handle(self, request):
         path = request.path_info
